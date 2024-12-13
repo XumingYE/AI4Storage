@@ -38,6 +38,9 @@ AI For Storage, including drive failure prediction and fault recovery.
 | 195  | Hardware ECC Recovered      | Corrected errors via ECC           | 硬件ECC纠正计数，表示通过硬件ECC纠正的错误次数。 |
 | 198  | Uncorrectable Sector Count  | Sectors with uncorrectable errors  | 不可修复扇区计数，表示存在不可修复错误的扇区数量。 |
 
+数据格式：total_data.append({'disk_id': disk_id, 'model': model, 'data': serialized_data, 'label': 0})
+
+
 # 结果说明
 
 使用raw_10head_10window
@@ -70,4 +73,4 @@ TODO
 ![测试](./imgs/test_data.png)
 
 - [ ] 使用N=30天的SMART数据进行测试
-
+- [ ] 数据格式加入n_further_days，表示还有N天硬盘出现错误，如果该硬盘不会出现错误，则=-1
