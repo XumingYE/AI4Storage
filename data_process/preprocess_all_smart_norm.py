@@ -1,4 +1,5 @@
 import os
+import sys
 import pandas as pd
 import numpy as np
 from datetime import timedelta
@@ -37,7 +38,7 @@ failure_data['failure_time'] = pd.to_datetime(failure_data['failure_time'])
 failure_data = failure_data.sort_values(by='failure_time', ascending=True)
 
 # 因为如果从20180101的错误开始计算，由于没有2018年之前的数据，所以这些输入会不匹配。因此我们直接从2018年1月22日的数据开始计算。
-filter_failure_data = pd.to_datetime('2018-03-22')
+filter_failure_data = pd.to_datetime('2018-10-20')
 failure_data = failure_data[failure_data['failure_time'] >= filter_failure_data]
 
 end_date = failure_data.iloc[0].failure_time
@@ -64,8 +65,22 @@ for date in tqdm(date_range):
 
 range_csv = pd.concat(all_data, ignore_index=True)
 
+# ================== 测试删除的代码 ===================
+# 生成要删除的日期范围
+# delete_dates = [(start_date + timedelta(days=i)).strftime('%Y%m%d') for i in range(2)]
+# delete_dates = [int(date) for date in delete_dates]  # 将日期转换为整数类型
+
+# print(f"delete_dates: {delete_dates}")
+# # 删除 range_csv 中指定日期的数据
+# print(f"range_csv shape: {range_csv.shape}")
+# # range_csv['ds'] = range_csv['ds'].astype(str)
+# range_csv = range_csv[~range_csv['ds'].isin(delete_dates)]
+# print(f"range_csv shape: {range_csv.shape}")
+# sys.exit(0)
+# ================== 测试删除的代码 ===================
+
 total_data = []
-save_count = 0
+save_count = 5
 
 for failure in tqdm(failure_data.itertuples(), total=len(failure_data)):
     # 如果当前时间 - start_range_day > start_date, 则计算超过的时间
@@ -77,7 +92,7 @@ for failure in tqdm(failure_data.itertuples(), total=len(failure_data)):
         delete_dates = [(start_date + timedelta(days=i)).strftime('%Y%m%d') for i in range(days)]
 
         # 删除 range_csv 中指定日期的数据
-        # range_csv = range_csv[~range_csv['date'].isin(delete_dates)]
+        range_csv = range_csv[~range_csv['ds'].isin(delete_dates)]
         
         # 加载并加入 end_date+1 和 end_date+2 的数据
         for i in range(1, days + 1):
