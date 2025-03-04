@@ -8,7 +8,7 @@ import pickle
 
 # 未来优化：可以通过调整存储的csv窗口大小来加速，但是需要考虑window
 
-usecols = ['disk_id', 'ds', 'model', 'n_1', 'n_9', 'n_12', 'n_171', 'n_173', 'n_174', 'n_183', 'n_187', 'n_188', 'n_194', 'n_195', 'n_198']
+usecols = ['disk_id', 'ds', 'model', 'n_1', 'n_5', 'n_9', 'n_12', 'n_171', 'n_173', 'n_174', 'n_183', 'n_187', 'n_188', 'n_194', 'n_195', 'n_198']
 
 smart_data_base_folder = '/mnt/raid5/sum/card/storage/StreamDFP/dataset/SMART'
 
@@ -27,7 +27,7 @@ separator = '<SEP>'
 failure_file_path = '/mnt/raid5/sum/card/storage/StreamDFP/dataset/ssd_failure_label.csv'  # 设置为failure数据的路径
 
 # 分批保存文件的基础名
-output_folder = '/mnt/raid5/sum/card/storage/StreamDFP/dataset/train_norm'
+output_folder = '/mnt/raid5/sum/card/storage/AI4Storage/datasets/norm_10ahead_10window'
 output_file_prefix = "processed_data_part"
 
 # 加载失败数据
@@ -80,7 +80,7 @@ range_csv = pd.concat(all_data, ignore_index=True)
 # ================== 测试删除的代码 ===================
 
 total_data = []
-save_count = 5
+save_count = 0
 
 for failure in tqdm(failure_data.itertuples(), total=len(failure_data)):
     # 如果当前时间 - start_range_day > start_date, 则计算超过的时间
